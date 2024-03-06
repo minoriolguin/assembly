@@ -1,0 +1,117 @@
+Script started on 2024-01-27 22:11:55-07:00 [TERM="xterm-256color" TTY="/dev/pts/11" COLUMNS="98" LINES="49"]
+
+Disk quotas for user minori.olguin (uid 27804491): 
+     Filesystem   space   quota   limit   grace   files   quota   limit   grace
+10.44.125.21:/CSUSERS
+                  8952K  10240M  10240M              79    100k    100k        
+
+]0;minori.olguin@csa2:~/Documents/CPSC355[?2004h[UC minori.olguin@csa2 CPSC355] gdb assign1b.o
+[?2004l[35;1mGNU gdb (GDB) Fedora Linux 13.2-6.fc38[m
+Copyright (C) 2023 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <[32mhttp://gnu.org/licenses/gpl.html[m>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+Type "show copying" and "show warranty" for details.
+This GDB was configured as "aarch64-redhat-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+[32m<https://www.gnu.org/software/gdb/bugs/>[m.
+Find the GDB manual and other documentation resources online at:
+    <[32mhttp://www.gnu.org/software/gdb/documentation/[m>.
+
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from [32massign1b.o[m...
+
+This GDB supports auto-downloading debuginfo from the following URLs:
+  <[32mhttps://debuginfod.fedoraproject.org/[m>
+[?2004hEnable debuginfod for this session? (y or [n]) y
+[?2004lDebuginfod has been enabled.
+To make this setting permanent, add 'set debuginfod enabled on' to .gdbinit.
+Downloading separate debug info for [32m/home/csusers/minori.olguin/Documents/CPSC355/assign1b.o[m
+[###                                                                                           ]                                                                                                  (No debugging symbols found in [32massign1b.o[m)
+[?2004h(gdb) b done
+[?2004lBreakpoint 1 at [34m0x41026c[m
+[?2004h(gdb) display/i p[K$pc
+[?2004l1: x/i $pc
+[2m<error: [m[2mNo registers.[m[2m>[m
+[?2004h(gdb) r
+[?2004lStarting program: [32m/home/csusers/minori.olguin/Documents/CPSC355/assign1b.o[m 
+                                                                                                                                                                                                    [Thread debugging using libthread_db enabled]
+Using host libthread_db library "[32m/lib64/libthread_db.so.1[m".
+
+Current x value: -10
+Current y value 123
+Current minimum value 123
+
+Current x value: -9
+Current y value 332
+Current minimum value 123
+
+Current x value: -8
+Current y value 441
+Current minimum value 123
+
+Current x value: -7
+Current y value 468
+Current minimum value 123
+
+Current x value: -6
+Current y value 431
+Current minimum value 123
+
+Current x value: -5
+Current y value 348
+Current minimum value 123
+
+Current x value: -4
+Current y value 237
+Current minimum value 123
+
+Current x value: -3
+Current y value 116
+Current minimum value 116
+
+Current x value: -2
+Current y value 3
+Current minimum value 3
+
+Current x value: -1
+Current y value -84
+Current minimum value -84
+
+Current x value: 0
+Current y value -127
+Current minimum value -127
+
+Current x value: 1
+Current y value -108
+Current minimum value -127
+
+Current x value: 2
+Current y value -9
+Current minimum value -127
+
+Current x value: 3
+Current y value 188
+Current minimum value -127
+
+Current x value: 4
+Current y value 501
+Current minimum value -127
+
+Breakpoint 1, [34m0x000000000041026c[m in [33mdone[m ()
+1: x/i $pc
+=> [34m0x41026c[m <[33mdone[m>:	[32mldr[m	[31mx0[m, [34m0x410288[m <[33mdone[m+28>
+[?2004h[?2004l[?2004h(gdb) p $x28
+[?2004l$1 = -127
+[?2004h(gdb) c
+[?2004lContinuing.
+
+Final  minimum value -127
+[Inferior 1 (process 2905125) exited with code 033]
+[?2004h[?2004l[?2004h(gdb) exit
+[?2004l]0;minori.olguin@csa2:~/Documents/CPSC355[?2004h[UC minori.olguin@csa2 CPSC355] [?2004l
+exit
+
+Script done on 2024-01-27 22:12:59-07:00 [COMMAND_EXIT_CODE="0"]
