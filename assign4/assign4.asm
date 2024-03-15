@@ -1,244 +1,223 @@
-// CPSC 355 W24 Assignment 1
+// CPSC 355 W24 Assignment 4
 // Minori Olguin UCID: 30035923
-// Description: 
-//	
 
-define(FALSE, 0)
-define(TRUE, 1)
+define(FALSE, 0)						// Defining a macro for false = 0
+define(TRUE, 1)							// Defining a macro for true = 1
 
-origin_str:		.string "Cuboid %s origin = (%d, %d)\n"
-base_str:		.string "\tBase width = %d   Base length = %d\n"
-height_str:		.string "\tHeight = %d\n"
-volume_str:		.string "\tVolume = %d\n\n"
+cuboid_str:	.string "\nCuboid %s origin = (%d, %d)\n\tBase width = %d Base length = %d\n\tHeight = %d\n\tVolume = %d\n\n"
+								// Setting string to print cuboid info
+initial_str:	.string "\nInitial cuboid values:\n"		// Setting string to print initialtitle
+changed_str:    .string "\nChanged cuboid values:\n"		// Setting string to print changed title
+first_str:	.string "first"					// Setting string to print first label
+second_str:	.string "second"				// Setting string to print second label
 
-initial_str:	.string "Initial cuboid values:\n"
-changed_str:    .string "\nChanged cuboid values:\n"
-first_str:		.string "first"
-second_str:		.string "second"
+	x_origin_s = 0						// The stack offset for x 
+	y_origin_s = 4						// The stack offset for y
 
-	x_s = 0								// offset of xPoint_s from base of struct point
-	y_s = 4								// offset of yPoint_s from base of struct point
-	point_size = 8						// size of struct point
+	width_base_s = 8					// The stack offset for base width
+	length_base_s = 12					// The stack offset for base length
+	height_s = 16						// The stack offset for height
+	volume_s = 20						// The stack offset for volume
 
-	width_s = 0							// stack from base of struct dimension
-	length_s = 4						// stack from base of struct dimension
-	dimension_size = 8					// size of dimension
+	cuboid_size = 24					// The size of a cuboid
 
-	cuboid_origin = 0					// 
-	cuboid_base = 8						// 
-	cuboid_height = 16					// initialize height
-	cuboid_volume = 20					// volume of the struct cuboid
-	cuboid_offset = 16					// base offset of the cuboid
-	cuboid_1 = 20						// assembler equate of cuboid 1
-	cuboid_2 = 20						// assembler equate of cuboid 2
-	total_size = cuboid_base			// calculate total_size
+	alloc = -(16 + (cuboid_size * 2)) & -16			// alloc variable to allocate memory
+	dealloc = -alloc					// dealloc variable to deallocate memory
+	first_s = 16						// Offset of first cuboid
+	second_s =  16 + cuboid_size				// Offset of second cuboid
 
-	alloc = -(16 + total_size) & -16	// define total memory allocation
-	dealloc = -alloc					// set size to be deallocated
-	cuboid_s = 16						// cuboid volume
-	first_s = 16						// offset of cuboid_1
-	second_s = 36	
+	cuboid_alloc = -(16 + cuboid_size) & -16		// cuboid_alloc variable for allocating memory in the newCuboid function
+	cuboid_dealloc = -cuboid_alloc				// cuboid_dealloc variable for deallocating memory in the newCuboid function
 
-	.balign 4
+	result_s = 16                          	          	// The stack offset for result 
+	result_size = 4                                  	// The size of result (int)
+	equal_size_alloc = -(16 + result_size) & -16		// Allocating memory for the equalSize function
+	equal_size_dealloc = -equal_size_alloc 			// Deallocating memory for the equalSize function
 
-newCuboid:
-	stp 	x29, x30, [sp, alloc]!							// Allocate 16 bytes of memory from the newCuboid frame record
-	mov 	x29, sp											// Move the stack pointer to the frame pointer.
+	.balign 4						// Ensuring the alignment is divisible by 4 columns
 
-	mov 	w1, 0											// register w1 --> holds 0
-	str 	w1, [x29, cuboid_s + cuboid_origin + x_s]	// storing w1 back into the stack
+newCuboid:							// newCuboid function label
+	stp 	x29, x30, [sp, cuboid_alloc]!			// Allocate 16 bytes of memory from the newCuboid frame record
+	mov 	x29, sp						// Move the stack pointer to the frame pointer.
 
-	mov 	w2, 0											// register w2 --> holds 0
-	str 	w2, [x29, cuboid_s + cuboid_origin + y_s]		// storing w2 back into the stack
+	add 	x9, x29, cuboid_size              		// Add cuboid_size to fp 
+	str 	xzr, [x9, x_origin_s]				// Store 0 in x origin address
+	str 	xzr, [x9, y_origin_s]				// Store 0 in y origin address
 
-	mov 	w3, 2											// register w3 --> holds 2
-	str 	w3, [x29, cuboid_s + cuboid_base + width_s]		// storing w3 into the stack
+	mov 	w10, 2						// Setting w10 to immediate value 2
+   	str 	w10, [x9, width_base_s]            		// Storing 2 to width base address
+   	str 	w10, [x9, length_base_s]			// Storing 2 to length base address
+	
+	mov 	w11, 3						// Setting w11 to immediate value 3
+	str 	w11, [x9, height_s]	          		// Storing 3 to height address
+    
+	ldr 	w10, [x9, width_base_s]				// Loading width base value to w10
+	ldr 	w11, [x9, length_base_s]			// Loading length base value to w11
+	ldr	w12, [x9, height_s]				// Loading height value to w12
+					
+	mul	w13, w10, w11					// Multiplying w10 * w11 (width * length)
+	mul	w13, w13, w12					// Multiplying w13 * w12 (width * length * height)
 
-	mov 	w4, 2											// register w4 --> holds 2
-	str 	w4, [x29, cuboid_s + cuboid_base + length_s]		// storing w4 into the stack
+	str 	w13, [x9, volume_s]				// Storing the multiplication result to volume address
 
-	mov 	w5, 3											// register w5 --> holds 3
-	str 	w5, [x29, cuboid_s + cuboid_height]				// storing w5 into the stack
+	ldr 	w10, [x9, x_origin_s]               		// Loading x origin value to w10
+  	str 	w10, [x8, x_origin_s]             		// Storing x origin value to x8 to be accessible by main
+    	ldr 	w10, [x9, y_origin_s]          			// Loading y origin value to w10
+   	str 	w10, [x8, y_origin_s]              		// Storing y origin value to x8 to be accessible by main
+    	ldr 	w10, [x9, width_base_s]             		// Loading width value to w10
+    	str 	w10, [x8, width_base_s]            		// Storing width value to x8 to be accessible by main
+    	ldr 	w10, [x9, length_base_s]         		// Loading length value to w10
+    	str 	w10, [x8, length_base_s]          		// Storing length value to x8 to be accessible by main
+	ldr	w10, [x9, height_s]				// Loading height value to w10
+	str	w10, [x8, height_s]				// Storing height value to x8 to be accessible by main
+   	ldr 	w10, [x9, volume_s]                		// Loading volume value to w10
+   	str 	w10, [x8, volume_s]  				// Storing volume value to x8 to be accessible by main
 
-	mul 	w6, w3, w4										// 
-	mul 	w6, w5, w6										// 
-	str 	w6, [x29, cuboid_s + cuboid_volume]				// 
+	ldp 	x29, x30, [sp], cuboid_dealloc			// Deallocating the subroutine memory
+	ret							// Return to caller
 
-	ldr 	w9, [x29, cuboid_s + cuboid_origin + x_s]	// 
-	str 	w9, [x8, cuboid_origin + x_s]				// 
+move:								
+	stp 	x29, x30, [sp, -16]!				// Allocate 16 bytes of memory
+	mov 	x29, sp						// Updating fp to sp 
 
-	ldr 	w9, [x29, cuboid_s + cuboid_origin + y_s]		// 
-	str 	w9, [x8, cuboid_origin + y_s]				// 
+	ldr 	w9, [x0, x_origin_s]				// Loading x origin value to w9
+	add 	w9, w9, w1					// Add w9 + w1 and store in w9
+	str 	w9, [x0, x_origin_s]				// Storing updated y origin value
 
-	ldr 	w9, [x29, cuboid_s + cuboid_base + width_s]		// 
-	str 	w9, [x8, cuboid_base + width_s]						// store w9 as cuboid in dimension w
+	ldr 	w9, [x0, y_origin_s]				// Loading y origin value to w9
+	add 	w9, w9, w2					// Add w9 + w2 and store in w9
+	str 	w9, [x0, y_origin_s]				// Storing updated y origin value
 
-	ldr 	w9, [x29, cuboid_s + cuboid_base + length_s]					// load cuboid dim l into w9
-	str 	w9, [x8, cuboid_base + length_s]						// store w9 as cuboid in dimension l
-
-	ldr 	w9, [x29, cuboid_s + cuboid_height]				// load cuboid height into w9
-	str 	w9, [x8, cuboid_height]					// store w9 as cuboid in height
-
-	ldr 	w9, [x29, cuboid_s + cuboid_volume]						// load cuboid volume into w9
-	str 	w9, [x8, cuboid_volume]							// store w9 as cuboid into cuboid a
-
-	ldp 	x29, x30, [sp], dealloc							// De-allocate the subroutine memory
-	ret										// Return to caller
-
-
-move:
-	stp 	x29, x30, [sp, -16]!							// Allocate 16 bytes of memory from the newcuboid frame record
-	mov 	x29, sp									// Set x29 to the value of sp
-
-	ldr 	w9, [x0, cuboid_origin + x_s]						// load current cuboid X value
-	add 	w9, w9, w1									// add w9 and w1 and store in w9
-	str 	w9, [x0, cuboid_origin + x_s]						// store new cuboid X value
-
-	ldr 	w10, [x0, cuboid_origin + y_s]						// load current cuboid Y value
-	add 	w10, w10, w2								// add w10 and w2 and store into w10
-	str 	w10, [x0, cuboid_origin + y_s]						// store new cuboid Y value
-
-	ldp 	x29, x30, [sp], 16								// De-allocate the subroutine memory
-	ret										// Return to caller
+	ldp 	x29, x30, [sp], 16				// Deallocating the subroutine memory
+	ret							// Return to caller
 
 scale:
-	stp 	x29, x30, [sp, -16]!							// Allocate 16 bytes of memory from the newcuboid frame record
-	mov 	x29, sp									// setting x29 to the value of sp
+	stp 	x29, x30, [sp, -16]!				// Allocate 16 bytes of memory
+	mov 	x29, sp						// Updating fp to sp
 
-	ldr 	w9, [x0, cuboid_base + width_s]						// load current dim W value
-	mul 	w9, w9, w1									// w9 = w9 * w1
-	str 	w9, [x0, cuboid_base + width_s]						// store new dim W value
+	ldr 	w9, [x0, width_base_s]				// Loading base width to w9
+	mul 	w9, w9, w1					// w9 = w9 * w1
+	str 	w9, [x0, width_base_s]				// Storing updated base width value
 
-	ldr 	w10, [x0, cuboid_base + length_s]						// load current dim L value
-	mul 	w10, w10, w1								// w10 = w10 * w1
-	str 	w10, [x0, cuboid_base + length_s]						// store new dim L value
+	ldr 	w9, [x0, length_base_s]				// Loading base length to w9
+	mul 	w9, w9, w1					// w9 = w9 * w1
+	str 	w9, [x0, length_base_s]				// Storing updated base length value
 
-	ldr 	w11, [x0, cuboid_height]					// load current height value
-	mul 	w11, w11, w1								// w11 = w11 * w1
-	str 	w11, [x0, cuboid_height]					// store new height value
+	ldr 	w9, [x0, height_s]				// Load height to w9
+	mul 	w9, w9, w1					// w9 = w9 * w1
+	str 	w9, [x0, height_s]				// Storing updated height value
 
-	mul 	w4, w9, w10									// w4 = w9 * w10
-	mul 	w4, w11, w4									// w4 = w11 * w4 (replace value in w4 with final volume)
-	str 	w4, [x0, cuboid_volume]							// store new value of volume in w4
+	ldr     w9, [x0, width_base_s]				// Loading width to w9
+	ldr     w10, [x0, length_base_s]			// Loading length to w10
+	ldr     w11, [x0, height_s]				// Loading height to w11
 
-	ldp 	x29, x30, [sp], 16								// reallocating space back in the stack
-	ret										
+	mul 	w9, w9, w10					// w9 = w9 * w10 (new width * new length)
+	mul 	w9, w9, w11					// w9 = w9 * w11 (new width * new length* new height)
+	str 	w9, [x0, volume_s]				// Storing new volume value to volume address
 
-printCuboid:
-	stp 	x29, x30, [sp, -32]!							// allocating space in the stack
-	mov 	x29, sp									
+	ldp 	x29, x30, [sp], 16				// Deallocating space in the stack 
+	ret							// Returning to caller
 
-	str 	x19, [x29, 16]								
-	mov 	x19, x0								
+printCuboid:							// Print cuboid function label
+	stp 	x29, x30, [sp, -16]!				// Allocating space in the stack
+	mov 	x29, sp						// Moving sp to fp	
 
-	ldr 	x0, =origin_str
-	mov 	w1, w1								
-	ldr 	w2, [x19, cuboid_origin + x_s]					
-	ldr 	w3, [x19, cuboid_origin + y_s]				
-	bl 		printf
-	
-	ldr		x0, =base_str			
-	ldr 	w4, [x19, cuboid_base + width_s]					
-	ldr 	w5, [x19, cuboid_base + length_s]					
-	bl		printf
+    	ldr 	x2, [x1, x_origin_s]				// Set x2 to the value of x origin
+    	ldr 	x3, [x1, y_origin_s]				// Set x3 to the value of y origin
+	ldr	x4, [x1, width_base_s]				// Set x4 to the value of the width of the base
+	ldr	x5, [x1, length_base_s]				// Set x5 to the value of the length of the base
+	ldr	x6, [x1, height_s]				// Set x6 to the value of the height
+	ldr	x7, [x1, volume_s]				// Set x7 to the value of the volume
 
-	ldr		x0, =height_str
-	ldr 	w6, [x19, cuboid_height]								
-	ldr 	w7, [x19, cuboid_volume]						
+    	mov 	x1, x0						// Move the string parameter (already set up in main) to the second parameter
+    	ldr 	x0, =cuboid_str					// Load cuboid string to x0
 
-	bl 		printf									
-	ldp 	x29, x30, [sp], 32								// deallocating stack memeory
-	ret										
+	bl 	printf						// Calling print function
 
+	ldp 	x29, x30, [sp], 16				// Deallocating memory space
+	ret							// Returning to caller
 
-define(result, w24)						
+equalSize:							// Equal size function label 
+	stp 	x29, x30, [sp, equal_size_alloc]!		// Allocating memory for equal size function
+	mov 	x29, sp						// Moving sp to fp
 
-equalSize:
-	stp 	x29, x30, [sp, -32]!
-	mov 	x29, sp								
+	mov 	w9, FALSE					// Moving false (0) to result register
+	str	w9, [x29, result_s]				// Storing the result to result address
 
-	mov 	result, FALSE							
+	ldr 	w10, [x0, width_base_s]				// Loading base width of first cuboid to w9
+	ldr 	w11, [x1, width_base_s]				// Loading base width of second cuboid to w10
+	cmp	w10, w11					// Comparing width of cuboid 1 to cuboid 2
+	b.ne	equal_size_exit					// If not equal, then branch to exit 
 
-	ldr 	w9, [x0, cuboid_base + width_s]					
-	ldr 	w10, [x0, cuboid_base + length_s]			
-	ldr 	w11, [x0, cuboid_height]			
+	ldr 	w10, [x0, length_base_s]			// Loading base length of first cuboid to w9
+	ldr 	w11, [x1, length_base_s]			// Loading base length of second cuboid to w10
+	cmp	w10, w11					// Comparing length of cuboid 1 to cuboid 2
+	b.ne	equal_size_exit					// If not equal, then branch to exit
 
-	ldr 	w12, [x1, cuboid_base + width_s]				
-	ldr 	w13, [x1, cuboid_base + length_s]				
-	ldr 	w14, [x1, cuboid_height]			
+	ldr 	w10, [x0, height_s]				// Loading height of cuboid 1 to w9
+	ldr 	w11, [x1, height_s]				// Loading height of cuboid 2 to w10
+	cmp	w10, w11					// Comparing height of cuboid 1 to cuboid 2
+	b.ne	equal_size_exit					// If not equal, then branch to exit
+											
+	mov 	w9, TRUE					// Move true to result register
+	str 	w9, [x29, result_s]				// Save result to result address
+    	ldr 	w0, [x29, result_s]				// Loading resutls to w0 to make it accessible to main				
 
-	cmp 	w9, w12					
-	b.ne 	next						
-
-	cmp 	w10, w13						
-	b.ne 	next							
-
-	cmp 	w11, w14					
-	b.ne 	next								
-
-	mov 	result, TRUE						
-	mov 	w0, result							
-	bl 		end								
-
-next:
-	mov 	w0, result							
-
-end:
-	ldp 	x29, x30, [sp], 32					
-	ret 										// return to caller
-
-	.global main			        			//
-
-main:
-	stp 	x29, x30, [sp, alloc]!					// allocating space in the stack
-	mov 	x29, sp									// setting the value of sp to x29
-
-	add 	x8, x29, first_s						// add x29 and first_s and store in x8
-	bl 		newCuboid									// create a new cuboid by branching to newCuboid
-
-	add 	x8, x29, second_s							// add x29 and second_s and store in x8
-	bl 		newCuboid									// create a new cuboid by branching to newCuboid
-
-	ldr 	x0, =initial_str								// initialize print function
-	bl 		printf									// call print function
-
-	add 	x0, x29, first_s								// add x29 and first_s and store in x0
-	ldr 	w1, =first_str									// load =first into w1
-	bl 		printCuboid									// print
-
-	add 	x0, x29, second_s								// add x29 and second_s to x0
-	ldr 	w1, =second_str									// ldr =second into w1
-	bl 		printCuboid									// print
-
-	add 	x0, x29, first_s						// add x29 and first_s and store in x0
-	add 	x1, x29, second_s						// add x29 and second_s and store in x1
-	bl 		equalSize								// bl equalsize
-	cmp 	w0, TRUE								// compare the output returned from equalSize (w0) and TRUE
-	b.ne 	else									// if w0 != TRUE branch to else
-
-	add 	x0, x29, first_s						// add x29 anad first_s and store in x0
-	mov 	w1, 3									// set w1 to 3
-	mov 	w2, -6									// set w2 to -6
-	bl 		move										// bl move
-
-	add 	x0, x29, second_s						// add x29 and second_s and store in x0
-	mov 	w1, 4									// set w1 to 4
-	bl 		scale									// bl scale
-
-else:											// Print modified values
-	ldr 	x0, =changed_str						// initilize the statement
-	bl 		printf									// print
-
-	add 	x0, x29, first_s								// add x29 and first_s and store in x0
-	ldr 	w1, =first_str								// load =first into w1
-	bl 		printCuboid									// bl printCuboid
+equal_size_exit:						// Equal size exit label	
+	ldp 	x29, x30, [sp], equal_size_dealloc		// Deallocating mememory
+	ret 							// Return to caller 
 
 
-	add 	x0, x29, second_s							// add x29 and second_s and store in x0
-	ldr 	w1, =second_str								// load =second into w1
-	bl 		printCuboid									// bl printCuboid
+	.global main			        		// Linking to main
 
-	mov 	w0, 0								//
-	ldp 	x29, x30, [sp], dealloc				// deallocate space in stack
-	ret										// return control to OS
-	
+main:								// Main label 
+	stp 	x29, x30, [sp, alloc]!				// Allocating space in the stack
+	mov 	x29, sp						// Setting fp to sp 
+
+	add 	x8, x29, first_s				// Adding x29 and first address to x8
+	bl 	newCuboid					// Create a new cuboid by branch link to newCuboid
+
+	add 	x8, x29, second_s				// Adding x29 and second address to x8
+	bl 	newCuboid					// Create a new cuboid by branch link to newCuboid
+
+	ldr 	x0, =initial_str				// Loading initial string to x0
+	bl 	printf						// Calling print function
+
+	ldr 	x0, =first_str					// Loading first string to x0
+	add	x1, x29, first_s				// Adding x29 and first 
+	bl 	printCuboid					// Calling print function
+
+	ldr 	x0, =second_str					// Loading first string to x0
+	add	x1, x29, second_s
+	bl 	printCuboid					// Calling print function
+
+	add 	x0, x29, first_s				// Adding fp and first address
+	add 	x1, x29, second_s				// Adding  fp and second address
+	bl 	equalSize					// Branch link to equal size function 
+if:								// If label
+	cmp 	w0, TRUE					// Checking if w0 holds true value
+	b.ne 	else						// Conditional branch to else 
+
+	add 	x0, x29, first_s				// Adding fp and first address
+	mov 	w1, 3						// Moving immediate 3 into w1
+	mov 	w2, -6						// Moving immediate -6 into w2
+	bl 	move						// Branch link to move function
+
+	add 	x0, x29, second_s				// Adding fp and second address
+	mov 	w1, 4						// Moving immediate 4 into w1 
+	bl 	scale						// Branch link to scale funciton 
+
+else:								// Else label		
+	ldr 	x0, =changed_str				// Loading changed string to x0
+	bl 	printf						// Calling print function
+
+	ldr 	x0, =first_str					// Adding x29 and first address to x0
+	add 	x1, x29, first_s				// Loading first string to x1
+	bl 	printCuboid					// Branch link to printCuboid function
+
+	ldr	x0, =second_str					// Adding fp to second address
+	add 	x1, x29, second_s				// Loading second string to w1
+	bl 	printCuboid					// Branch link to printCuboid function
+
+	ldp 	x29, x30, [sp], dealloc				// Deallocate space in stack
+	ret							// Return control to OS	

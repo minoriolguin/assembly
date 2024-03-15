@@ -1,0 +1,179 @@
+Script started on 2024-03-15 01:45:57-06:00 [TERM="xterm-256color" TTY="/dev/pts/33" COLUMNS="80" LINES="25"]
+
+Disk quotas for user minori.olguin (uid 27804491): 
+     Filesystem   space   quota   limit   grace   files   quota   limit   grace
+10.44.125.21:/CSUSERS
+                  7316K  10240M  10240M             103    100k    100k        
+
+]0;minori.olguin@csa1:~/Documents[?2004h[UC minori.olguin@csa1 Documents] gdb assign4.occ assign4.s -o assign4.o && ./assign4.o[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cdb assign4.o[K
+[?2004l[35;1mGNU gdb (GDB) Fedora Linux 13.2-6.fc38[m
+Copyright (C) 2023 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <[32mhttp://gnu.org/licenses/gpl.html[m>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+Type "show copying" and "show warranty" for details.
+This GDB was configured as "aarch64-redhat-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+[32m<https://www.gnu.org/software/gdb/bugs/>[m.
+Find the GDB manual and other documentation resources online at:
+    <[32mhttp://www.gnu.org/software/gdb/documentation/[m>.
+
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from [32massign4.o[m...
+
+This GDB supports auto-downloading debuginfo from the following URLs:
+  <[32mhttps://debuginfod.fedoraproject.org/[m>
+[?2004hEnable debuginfod for this session? (y or [n]) n
+[?2004lDebuginfod has been disabled.
+To make this setting permanent, add 'set debuginfod enabled off' to .gdbinit.
+(No debugging symbols found in [32massign4.o[m)
+[?2004h(gdb) b if
+[?2004lBreakpoint 1 at [34m0x4103fc[m
+[?2004h(gdb) b else
+[?2004lBreakpoint 2 at [34m0x410420[m
+[?2004h(gdb) display/i $pc
+[?2004l1: x/i $pc
+[2m<error: [m[2mNo registers.[m[2m>[m
+[?2004h(gdb) r
+[?2004lStarting program: [32m/home/csusers/minori.olguin/Documents/assign4.o[m 
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "[32m/lib64/libthread_db.so.1[m".
+
+Initial cuboid values:
+
+Cuboid first origin = (0, 0)
+	Base width = 2 Base length = 2
+	Height = 3
+	Volume = 12
+
+
+Cuboid second origin = (0, 0)
+	Base width = 2 Base length = 2
+	Height = 3
+	Volume = 12
+
+
+Breakpoint 1, [34m0x00000000004103fc[m in [33mif[m ()
+1: x/i $pc
+=> [34m0x4103fc[m <[33mif[m>:	[32mcmp[m	[31mw0[m, [34m#0x1[m
+[?2004hMissing separate debuginfos, use: dnf debuginfo-install glibc-2.37-18.fc38.aarch64
+[?2004l[?2004h(gdb) ni
+[?2004l[34m0x0000000000410400[m in [33mif[m ()
+1: x/i $pc
+=> [34m0x410400[m <[33mif[m+4>:	[32mb.ne[m	[34m0x410420[m <[33melse[m>[37;2m  // b.any[m
+[?2004h[?2004l[?2004h(gdb) x/12wd $x29 + 16
+[?2004l[34m0xfffffffff0c0[m:	0	0	2	2
+[34m0xfffffffff0d0[m:	3	12	0	0
+[34m0xfffffffff0e0[m:	2	2	3	12
+[?2004h(gdb) x/12wd $x29 + 16[C[C[C[C[C[Cni[K
+[?2004l[34m0x0000000000410404[m in [33mif[m ()
+1: x/i $pc
+=> [34m0x410404[m <[33mif[m+8>:	[32madd[m	[31mx0[m, [31mx29[m, [34m#0x10[m
+[?2004h[?2004l[?2004h(gdb) ni[Knix/12wd $x29 + 16
+[?2004l[34m0xfffffffff0c0[m:	0	0	2	2
+[34m0xfffffffff0d0[m:	3	12	0	0
+[34m0xfffffffff0e0[m:	2	2	3	12
+[?2004h(gdb) ni
+[?2004l[34m0x0000000000410408[m in [33mif[m ()
+1: x/i $pc
+=> [34m0x410408[m <[33mif[m+12>:	[32mmov[m	[31mw1[m, [34m#0x3                   [m[37;2m	// #3[m
+[?2004h[?2004l[?2004h(gdb) ni
+[?2004l[34m0x000000000041040c[m in [33mif[m ()
+1: x/i $pc
+=> [34m0x41040c[m <[33mif[m+16>:	[32mmov[m	[31mw2[m, [34m#0xfffffffa            [m[37;2m	// #-6[m
+[?2004h[?2004l[?2004h(gdb) ni
+[?2004l[34m0x0000000000410410[m in [33mif[m ()
+1: x/i $pc
+=> [34m0x410410[m <[33mif[m+20>:	[32mbl[m	[34m0x4102bc[m <[33mmove[m>
+[?2004h[?2004l[?2004h(gdb) ni
+[?2004l[34m0x0000000000410414[m in [33mif[m ()
+1: x/i $pc
+=> [34m0x410414[m <[33mif[m+24>:	[32madd[m	[31mx0[m, [31mx29[m, [34m#0x28[m
+[?2004h[?2004l[?2004h(gdb) ni
+[?2004l[34m0x0000000000410418[m in [33mif[m ()
+1: x/i $pc
+=> [34m0x410418[m <[33mif[m+28>:	[32mmov[m	[31mw1[m, [34m#0x4                   [m[37;2m	// #4[m
+[?2004h[?2004l[?2004h(gdb) nix/12wd $x29 + 16[C[C[C[C[C[Cni[Kx/12wd $x29 + 16
+[?2004l[34m0xfffffffff0c0[m:	3	-6	2	2
+[34m0xfffffffff0d0[m:	3	12	0	0
+[34m0xfffffffff0e0[m:	2	2	3	12
+[?2004h(gdb) x/12wd $x29 + 16[C[C[C[C[C[Cni[K
+[?2004l[34m0x000000000041041c[m in [33mif[m ()
+1: x/i $pc
+=> [34m0x41041c[m <[33mif[m+32>:	[32mbl[m	[34m0x4102e4[m <[33mscale[m>
+[?2004h[?2004l[?2004h(gdb) ni
+[?2004l
+Breakpoint 2, [34m0x0000000000410420[m in [33melse[m ()
+1: x/i $pc
+=> [34m0x410420[m <[33melse[m>:	[32mldr[m	[31mx0[m, [34m0x410468[m <[33melse[m+72>
+[?2004h[?2004l[?2004h(gdb) ni
+[?2004l[34m0x0000000000410424[m in [33melse[m ()
+1: x/i $pc
+=> [34m0x410424[m <[33melse[m+4>:	[32mbl[m	[34m0x410070[m <[33mprintf@plt[m>
+[?2004h[?2004l[?2004h(gdb) ni
+[?2004l
+Changed cuboid values:
+[34m0x0000000000410428[m in [33melse[m ()
+1: x/i $pc
+=> [34m0x410428[m <[33melse[m+8>:	[32mldr[m	[31mx0[m, [34m0x410458[m <[33melse[m+56>
+[?2004h[?2004l[?2004h(gdb) nix/12wd $x29 + 16
+[?2004l[34m0xfffffffff0c0[m:	3	-6	2	2
+[34m0xfffffffff0d0[m:	3	12	0	0
+[34m0xfffffffff0e0[m:	8	8	12	768
+[?2004h(gdb) x/12wd $x29 + 16[C[C[C[C[C[Cni[K
+[?2004l[34m0x000000000041042c[m in [33melse[m ()
+1: x/i $pc
+=> [34m0x41042c[m <[33melse[m+12>:	[32madd[m	[31mx1[m, [31mx29[m, [34m#0x10[m
+[?2004h[?2004l[?2004h(gdb) ni
+[?2004l[34m0x0000000000410430[m in [33melse[m ()
+1: x/i $pc
+=> [34m0x410430[m <[33melse[m+16>:	[32mbl[m	[34m0x410330[m <[33mprintCuboid[m>
+[?2004h[?2004l[?2004h(gdb) ni
+[?2004l
+Cuboid first origin = (3, -6)
+	Base width = 2 Base length = 2
+	Height = 3
+	Volume = 12
+
+[34m0x0000000000410434[m in [33melse[m ()
+1: x/i $pc
+=> [34m0x410434[m <[33melse[m+20>:	[32mldr[m	[31mx0[m, [34m0x410460[m <[33melse[m+64>
+[?2004h[?2004l[?2004h(gdb) ni
+[?2004l[34m0x0000000000410438[m in [33melse[m ()
+1: x/i $pc
+=> [34m0x410438[m <[33melse[m+24>:	[32madd[m	[31mx1[m, [31mx29[m, [34m#0x28[m
+[?2004h[?2004l[?2004h(gdb) ni
+[?2004l[34m0x000000000041043c[m in [33melse[m ()
+1: x/i $pc
+=> [34m0x41043c[m <[33melse[m+28>:	[32mbl[m	[34m0x410330[m <[33mprintCuboid[m>
+[?2004h[?2004l[?2004h(gdb) nix/12wd $x29 + 16
+[?2004l[34m0xfffffffff0c0[m:	3	-6	2	2
+[34m0xfffffffff0d0[m:	3	12	0	0
+[34m0xfffffffff0e0[m:	8	8	12	768
+[?2004h(gdb) x/12wd $x29 + 16[C[C[C[C[C[Cni[K
+[?2004l
+Cuboid second origin = (0, 0)
+	Base width = 8 Base length = 8
+	Height = 12
+	Volume = 768
+
+[34m0x0000000000410440[m in [33melse[m ()
+1: x/i $pc
+=> [34m0x410440[m <[33melse[m+32>:	[32mldp[m	[31mx29[m, [31mx30[m, [[31msp[m], [34m#64[m
+[?2004h[?2004l[?2004h(gdb) ni
+[?2004l[34m0x0000000000410444[m in [33melse[m ()
+1: x/i $pc
+=> [34m0x410444[m <[33melse[m+36>:	[32mret[m
+[?2004h[?2004l[?2004h(gdb) ni
+[?2004l[34m0x0000fffff7e1059c[m in [33m__libc_start_call_main[m () from [32m/lib64/libc.so.6[m
+1: x/i $pc
+=> [34m0xfffff7e1059c[m <[33m__libc_start_call_main[m+124>:	[32mbl[m	[34m0xfffff7e27770[m <[33mexit[m>
+[?2004h[?2004l[?2004h(gdb) 
+[?2004l[Inferior 1 (process 2462877) exited with code 0133]
+[?2004h[?2004l[?2004h(gdb) exit
+[?2004l]0;minori.olguin@csa1:~/Documents[?2004h[UC minori.olguin@csa1 Documents] [?2004l
+exit
+
+Script done on 2024-03-15 01:47:56-06:00 [COMMAND_EXIT_CODE="0"]
